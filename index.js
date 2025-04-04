@@ -1,91 +1,56 @@
 import express from "express";
-import mongoose from "mongoose";
+import db from "./db/connection.js";
 import dotenv from "dotenv";
-import User from "./models/User.js";
-import Player from "./models/Player.js";
-import Post from "./models/Post.js";
+import session from "express-session";
+import userRoutes from "./routes/userRoutes.js"; // Correct path
+import postRoutes from "./routes/postRoutes.js"; // Correct path
+import { isAuthenticated } from "./Middleware/isAuthenticated.js"; // Correct path to middleware
+import { getDashboard } from "./controllers/userController.js";
 
+// Initialize dotenv
 dotenv.config();
 
+// Initialize app
 const app = express();
 
-app.set("view engine", "ejs");
-
-app.use(express.static("public"));
-
+// Middlewares
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.set("view engine", "ejs");
+app.use(express.static("public")); // Serve static files from 'public' folder
 
+// Session Middleware
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET, // Secret for encrypting session data
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
-mongoose.connect(process.env.MONGODB_URI, {
-   useNewUrlParser: true,
-   useUnifiedTopology: true, 
-})
-
-.then(() => console.log("Connected to MongoDB"))
-.catch((err) => console.error ("MongoDB connection error:", err));
-
+// Home route
 app.get("/", (req, res) => {
-    res.send("Server is running!");
+  res.render("home");
 });
 
-app.get("/users", async (req, res) => {
-    try{
-        const users = await User.find();
-        res.render("users", { users});
-    } catch (err) {
-        res.status(500).send("Error fetching users");
-    }
+// Routes
+app.use("/auth", userRoutes); // Authentication routes
+app.use("/posts", isAuthenticated, postRoutes); // Post routes with authentication required
+
+// Add this route for dashboard
+app.get("/dashboard", isAuthenticated, getDashboard);
+
+// Error Handling Middleware
+// app.use((err, req, res, next) => {
+//   console.error(err.stack);
+//   res.status(500).send("Something went wrong!");
+// });
+
+// Start Server
+const PORT = process.env.PORT || 3000;
+
+db.on("connected", () => {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 });
-
-app.get("/players", async (req, res) => {
-    try{
-        const players = await Player.find();
-        res.render("players", { players});
-    } catch (err) {
-        res.status(500).send("Error fetching players");
-    }
-});
-
-app.get("/posts", async (req, res) => {
-    try {
-        const posts = await Post.find().populate("user_id").populate("player_id");
-        console.log("Fetched Posts:", posts);
-        res.render("posts", { posts});
-    } catch (err) {
-        console.error("Error fetching posts:", err);
-        res.status(500).send("Error fetching posts");
-    }
-});
-
-app.get("/posts/create", async (req, res) => {
-    try {
-        const users = await User.find();
-        const players = await Player.find();
-        res.render("createPost", { users, players });
-    } catch (err) {
-        res.status(500).send("Error fetching users or players");
-    }
-});
-
-app.post("/posts", async (req, res) => {
-    try {
-        const { user_id, player_id, content } = req.body;
-
-        const newPost = new Post({
-            user_id: user_id,
-            player_id: player_id, 
-            content: content,
-        });
-
-        await newPost.save();
-        console.log("New post created!");
-
-        res.redirect("/posts");
-    } catch (err) {
-        console.error("Error creating post:", err);
-        res.status(500).send("Error creating post");
-    }
-});
-
-
-app.listen(3000, () => console.log("Server running on port 3000"));

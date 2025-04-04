@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Welcome to Your Dashboard!</h1>
+
+    <h2>Your Posts:</h2>
+    <ul>
+        <% userPosts.forEach(post => { %>
+            <li>
+                <strong>Player:</strong> <%= post.player_id.name %> <br>
+                <strong>Content:</strong> <%= post.content %>
+            </li>
+        <% }) %>
+    </ul>
+
+    <h2>Players You Can Post About:</h2>
+    <ul>
+        <% players.forEach(player => { %>
+            <li>
+                <a href="/posts/player/<%= player._id %>">
+                    <%= player.name %> - <img src="<%= player.image %>" width="50">
+                </a>
+            </li>
+        <% }) %>
+    </ul>
+</body>
+</html>

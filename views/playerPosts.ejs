@@ -1,0 +1,35 @@
+<!-- views/playerPosts.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= player.name %> Posts</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Optional, for styling -->
+</head>
+<body>
+    <h1><%= player.name %></h1>
+    <img src="<%= player.image %>" alt="<%= player.name %>" />
+
+    <h2>Posts about <%= player.name %></h2>
+    <% if (posts.length > 0) { %>
+        <ul>
+            <% posts.forEach(post => { %>
+                <li>
+                    <p><%= post.content %></p>
+                    <small>Posted by: <%= post.user_id.username %></small>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>No posts yet for this player.</p>
+    <% } %>
+
+   
+        <h3>Create a new post about <%= player.name %></h3>
+        <form action="/posts/player/<%= player._id %>" method="POST">
+            <textarea name="content" required></textarea>
+            <button type="submit">Create Post</button>
+        </form>
+ 
+</body>
+</html>
