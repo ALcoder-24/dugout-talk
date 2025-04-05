@@ -1,12 +1,46 @@
-<!-- views/playerPosts.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title><%= player.name %> Posts</title>
-    <link rel="stylesheet" href="/styles.css"> <!-- Optional, for styling -->
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        img {
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 80%;
+            height: 100px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+        }
+        .nav-buttons {
+            margin-bottom: 20px;
+        }
+        button {
+            margin: 5px;
+        }
+    </style>
 </head>
 <body>
+    <!-- Top Navigation Buttons -->
+    <div class="nav-buttons">
+        <a href="/dashboard"><button>Back to Home</button></a>
+        <a href="/auth/logout"><button>Logout</button></a>
+    </div>
+
     <h1><%= player.name %></h1>
     <img src="<%= player.image %>" alt="<%= player.name %>" />
 
@@ -24,12 +58,12 @@
         <p>No posts yet for this player.</p>
     <% } %>
 
-   
-        <h3>Create a new post about <%= player.name %></h3>
-        <form action="/posts/player/<%= player._id %>" method="POST">
-            <textarea name="content" required></textarea>
-            <button type="submit">Create Post</button>
-        </form>
- 
+    <!-- Post form always visible -->
+    <h3>Create a new post about <%= player.name %></h3>
+    <form action="/posts/player/<%= player._id %>" method="POST">
+        <textarea name="content" required></textarea><br>
+        <button type="submit">Create Post</button>
+    </form>
 </body>
 </html>
+

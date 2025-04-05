@@ -17,14 +17,10 @@ export const getPlayerPosts = async (req, res) => {
         // Get all posts about this player
         const posts = await Post.find({ player_id: playerId }).populate("user_id");
 
-        // Check if the user has already posted about this player
-        const userPost = await Post.findOne({ player_id: playerId, user_id: userId });
-
         // Render the player's page with posts and the option to create a post if not done already
         res.render("playerPosts", {
             player,
             posts,
-            userPost,  // This will help us determine if the user has already posted about this player
         });
     } catch (err) {
         res.status(500).send("Error fetching player posts");
