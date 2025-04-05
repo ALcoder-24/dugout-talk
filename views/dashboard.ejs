@@ -5,18 +5,42 @@
     <title>Dashboard</title>
 </head>
 <body>
-    <h1>Welcome to Your Dashboard!</h1>
+    <h1>Welcome to Your Dashboard, <%= user.username %>!</h1>
 
+
+    <!-- Logout and Home -->
+    <div style="margin-bottom: 20px;">
+        <a href="/auth/logout"><button>Logout</button></a>
+        <a href="/"><button>Back to Home</button></a>
+    </div>
+
+    <!-- User's Past Posts -->
     <h2>Your Posts:</h2>
     <ul>
-        <% userPosts.forEach(post => { %>
-            <li>
-                <strong>Player:</strong> <%= post.player_id.name %> <br>
-                <strong>Content:</strong> <%= post.content %>
-            </li>
-        <% }) %>
+        <% if (userPosts.length === 0) { %>
+            <li>You haven't written any posts yet.</li>
+        <% } else { %>
+            <% userPosts.forEach(post => { %>
+                <li>
+                    <strong>Player:</strong> <%= post.player_id.name %><br>
+                    <strong>Content:</strong> <%= post.content %><br>
+
+                    <!-- Edit Button -->
+                    <a href="/posts/<%= post._id %>/edit">
+                        <button>Edit</button>
+                    </a>
+
+                    <!-- Delete Button -->
+                    <form action="/posts/<%= post._id %>/delete" method="POST" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+                <hr>
+            <% }) %>
+        <% } %>
     </ul>
 
+    <!-- Available Players -->
     <h2>Players You Can Post About:</h2>
     <ul>
         <% players.forEach(player => { %>
@@ -29,3 +53,4 @@
     </ul>
 </body>
 </html>
+

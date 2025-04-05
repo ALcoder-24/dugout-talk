@@ -113,7 +113,7 @@ export const getDashboard = async (req, res) => {
         // Fetch all players
         const players = await Player.find();
 
-        res.render("dashboard", { userPosts, players }); // Render the dashboard view
+        res.render("dashboard", { userPosts, players, user: req.session.user }); // Render the dashboard view
     } catch (err) {
         res.status(500).send("Error loading dashboard");
     }

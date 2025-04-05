@@ -1,49 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Edit Post</title>
 </head>
 <body>
-    <h1>Edit Post</h1>
-    <form action="/posts/edit/<%= post._id %>" method="POST">
-        <label for="user_id">Select User:</label>
-        <select name="user_id" id="user_id" required>
-            <% users.forEach(user => { %>
-                <option value="<%= user._id %>" 
-                    <% if (post.user_id && String(user._id) === String(post.user_id._id)) { %> selected <% } %>>
-                    <%= user.username %>
-                </option>
-            <% }) %>
-        </select>
-        
-        <br>
+    <h1>Edit Your Post About <%= post.player_id.name %></h1>
 
-        <label for="player_id">Player:</label>
-        <select name="player_id" id="player_id">
-            <% players.forEach(player => { %>
-                <option value="<%= player._id %>" <%= player._id.equals(post.player_id._id) ? 'selected' : '' %>><%= player.name %></option>
-            <% }) %>
-        </select>
-        <br>
+    <div>
+        <img src="<%= post.player_id.image %>" alt="<%= post.player_id.name %>" width="150">
+        <p><strong>Team:</strong> <%= post.player_id.team %></p>
+        <p><strong>Era:</strong> <%= post.player_id.era %></p>
+    </div>
 
-        <label for="content">Content:</label>
-        <textarea name="content" id="content" required><%= post.content %></textarea>
-        <br>
-
+    <form action="/posts/<%= post._id %>/edit" method="POST">
+        <label for="content">Post Content:</label><br>
+        <textarea id="content" name="content" rows="6" cols="50" required><%= post.content %></textarea>
+        <br><br>
         <button type="submit">Update Post</button>
     </form>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            document.querySelector("form").addEventListener("submit", function (event) {
-                const content = document.getElementById("content").value.trim();
-                if (!content) {
-                    event.preventDefault();
-                    alert("Content cannot be empty!");
-                }
-            });
-        });
-    </script>
-    
-    <a href="/posts">Back to Posts</a>
+
+    <br>
+    <a href="/dashboard"><button>Back to Dashboard</button></a>
 </body>
 </html>
