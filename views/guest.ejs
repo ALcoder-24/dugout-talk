@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guest Page</title>
+</head>
+<body>
+    <h1>Welcome, Guest!</h1>
+
+    <p>Want to write a post? <a href="/auth/register"><button>Register Here</button></a></p>
+
+    <h2>Players You Can Post About:</h2>
+    <ul>
+        <% players.forEach(player => { %>
+            <li>
+                <a href="/posts/player/<%= player._id %>">
+                    <%= player.name %> - <img src="<%= player.image %>" width="50">
+                </a>
+            </li>
+        <% }) %>
+    </ul>
+</body>
+</html>

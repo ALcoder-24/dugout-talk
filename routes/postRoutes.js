@@ -19,4 +19,4 @@ router.get("/create", isAuthenticated, getCreatePost);
 router.post("/", isAuthenticated, createPost);
 
 
-export default router;
+export default router;;

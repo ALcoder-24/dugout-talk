@@ -6,6 +6,8 @@ import userRoutes from "./routes/userRoutes.js"; // Correct path
 import postRoutes from "./routes/postRoutes.js"; // Correct path
 import { isAuthenticated } from "./Middleware/isAuthenticated.js"; // Correct path to middleware
 import { getDashboard } from "./controllers/userController.js";
+import Player from "./models/Player.js";  // Import the Player model
+
 
 // Initialize dotenv
 dotenv.config();
@@ -40,11 +42,20 @@ app.use("/posts", isAuthenticated, postRoutes); // Post routes with authenticati
 // Add this route for dashboard
 app.get("/dashboard", isAuthenticated, getDashboard);
 
-// Error Handling Middleware
-// app.use((err, req, res, next) => {
-//   console.error(err.stack);
-//   res.status(500).send("Something went wrong!");
-// });
+app.get("/guest", (req, res) => {
+  // Fetch all players from the database
+  Player.find()
+      .then(players => {
+          // Render guest page and pass players to it
+          res.render("guest", { players });
+      })
+      .catch(err => {
+          console.error(err);
+          res.status(500).send("Error fetching players.");
+      });
+});
+
+
 
 // Start Server
 const PORT = process.env.PORT || 3000;
