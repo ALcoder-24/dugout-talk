@@ -1,76 +1,121 @@
-import db from "./db/connection.js"
-import Player from "./models/Player.js"
+import mongoose from "mongoose";
+import db from "./db/connection.js";
+import Player from "./models/Player.js";
+import Post from "./models/Post.js";
 
-const insertData = async () => {
-    // reset db
-    await db.dropDatabase();
+const players = [
+    {
+      name: "Shohei Ohtani",
+      era: "2018–present",
+      team: "Los Angeles Dodgers",
+      image: "https://img.mlbstatic.com/mlb-photos/image/upload/ar_9:16,g_auto,q_auto:good,w_2608,c_fill,f_jpg/v1/people/660271/action/vertical/current"
+    },
+    {
+      name: "Aaron Judge",
+      era: "2016–present",
+      team: "New York Yankees",
+      image: "https://nypost.com/wp-content/uploads/sites/2/2022/06/20220626_YankeesAstros052CS.jpg"
+    },
+    {
+      name: "Mookie Betts",
+      era: "2014–present",
+      team: "Los Angeles Dodgers",
+      image: "https://cdn.vox-cdn.com/thumbor/j83gHlE3ZwO9Jxi5AhW-mW3h_xI=/0x0:4096x2731/1200x800/filters:focal(1762x377:2416x1031)/cdn.vox-cdn.com/uploads/chorus_image/image/70931525/usa_today_18397044.0.jpg"
+    },
+    {
+      name: "Bobby Witt Jr.",
+      era: "2021–present",
+      team: "Kansas City Royals",
+      image: "https://a.espncdn.com/photo/2024/0614/r1345836_1296x729_16-9.jpg"
+    },
+    {
+      name: "Juan Soto",
+      era: "2018–present",
+      team: "New York Mets",
+      image: "https://a.espncdn.com/photo/2024/1205/mlb_juan_soto_mets_cr_16x9_608x342.jpg"
+    },
+    {
+      name: "Fernando Tatis Jr.",
+      era: "2019–present",
+      team: "San Diego Padres",
+      image: "https://static01.nyt.com/images/2021/02/19/sports/19kepner-padres-print1/18kepner-padres-1-mediumSquareAt3X.jpg"
+    },
+    {
+      name: "Kyle Tucker",
+      era: "2018–present",
+      team: "Chicago Cubs",
+      image: "https://cdn.vox-cdn.com/thumbor/d5IrUMLZ1af-FVcLfXJPHkU8FJI=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/25460018/usa_today_23344145.jpg"
+    },
+    {
+      name: "Freddie Freeman",
+      era: "2010–present",
+      team: "Los Angeles Dodgers",
+      image: "https://www.usatoday.com/gcdn/authoring/authoring-images/2024/10/26/USAT/75858831007-usatsi-24586247.jpg?crop=3121,3120,x782,y0"
+    },
+    {
+      name: "Vladimir Guerrero Jr.",
+      era: "2019–present",
+      team: "Toronto Blue Jays",
+      image: "https://media.gettyimages.com/id/2173199140/photo/arlington-texas-vladimir-guerrero-jr-27-of-the-toronto-blue-jays-celebrates-as-he-runs-the.jpg?s=612x612&w=gi&k=20&c=g4MWYLLevTit3bOSz9DN6psSgv2idvLhesQpLc-FzPo="
+    },
+    {
+      name: "José Ramírez",
+      era: "2013–present",
+      team: "Cleveland Guardians",
+      image: "https://c8.alamy.com/comp/2MB09WR/cleveland-guardians-jose-ramirez-slides-into-home-plate-to-score-against-the-tampa-bay-rays-during-the-fourth-inning-of-a-baseball-game-saturday-july-30-2022-in-st-petersburg-fla-ap-photoscott-audette-2MB09WR.jpg"
+    },
+    {
+      name: "Corey Seager",
+      era: "2015–present",
+      team: "Texas Rangers",
+      image: "https://www.therangerreport.com/wp-content/uploads/2022/03/2f82f367498a6a7ce96ca67b93231ee5.jpg"
+    },
+    {
+      name: "Paul Skenes",
+      era: "2023–present",
+      team: "Pittsburgh Pirates",
+      image: "https://npr.brightspotcdn.com/dims4/default/230e66d/2147483647/strip/true/crop/7490x4993+0+0/resize/880x587!/quality/90/?url=http%3A%2F%2Fnpr-brightspot.s3.amazonaws.com%2Fe7%2F6b%2Ff95a0ed14b0ab82c4937ff866a6e%2Fap24157862680288.jpg"
+    },
+    {
+      name: "Francisco Lindor",
+      era: "2015–present",
+      team: "New York Mets",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRuwcQXviGN0luLjnCpDThnT01yHhTvLAHgA&s"
+    },
+    {
+      name: "Elly De La Cruz",
+      era: "2023–present",
+      team: "Cincinnati Reds",
+      image: "https://static01.nyt.com/images/2023/06/30/multimedia/30mlb-elly-mania-bwfh/30mlb-elly-mania-bwfh-mediumSquareAt3X.jpg"
+    },
+    {
+      name: "Ronald Acuña Jr.",
+      era: "2018–present",
+      team: "Atlanta Braves",
+      image: "https://media-s3-us-east-1.ceros.com/players-tribune/images/2024/03/27/e1209f426bb92da6bd68c5dd749c6fcc/190617-br-mets-kl-0488-2.jpg"
+    }
+  ];
 
-    const players = [
-        {
-            name: "Pedro Martínez",
-            era: "1992–2009",
-            team: "Boston Red Sox",
-            image: "https://wordpress.wbur.org/wp-content/uploads/2015/01/0106_pedro-2004-1000x823.jpg"
-        },
-        {
-            name: "Vladimir Guerrero",
-            era: "1996–2011",
-            team: "Anaheim Angels",
-            image: "https://baseballhall.org/sites/default/files/Guerrero%20Vladimir%20498-2003_Bat_NBLMangin_3.jpg"
-        },
-        {
-            name: "Juan Marichal",
-            era: "1960–1975",
-            team: "San Francisco Giants",
-            image: "https://neilleifer.com/cdn/shop/products/1073_1200x1200_crop_center.jpg?v=1659038714"
-        },
-        {
-            name: "Robinson Canó",
-            era: "2005–present",
-            team: "New York Yankees",
-            image: "https://cdn.vox-cdn.com/thumbor/ahVtNtcY4UDJP6PB_Vl5oXWyoXQ=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/25220493/127884076.jpg"
-        },
-        {
-            name: "Manny Ramírez",
-            era: "1993–2011",
-            team: "Boston Red Sox",
-            image: "https://cdn.vox-cdn.com/thumbor/TMKH_018hrVaXp7rPGTtG-TL7Vw=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/12323305/77404391.jpg.jpg"
-        },
-        {
-            name: "David Ortiz",
-            era: "1997–2016",
-            team: "Boston Red Sox",
-            image: "https://baseballhall.org/sites/default/files/Ortiz%20David%20274-2010-87_Act_HoFUseOnly_0.jpg"
-        },
-        {
-            name: "Sammy Sosa",
-            era: "1989–2007",
-            team: "Chicago Cubs",
-            image: "https://hips.hearstapps.com/hmg-prod/images/sammy-sosa-189155-1-402.jpg?crop=1xw:1.0xh;center,top&resize=640:*"
-        },
-        {
-            name: "José Ramírez",
-            era: "2013–present",
-            team: "Cleveland Guardians",
-            image: "https://upload.wikimedia.org/wikipedia/commons/4/4b/Jose_Ramirez_%2852968360805%29_%28cropped%29.jpg"
-        },
-        {
-            name: "Albert Pujols",
-            era: "2001–2021",
-            team: "St. Louis Cardinals",
-            image: "https://upload.wikimedia.org/wikipedia/commons/2/22/Albert_Pujols_on_May_19%2C_2008.jpg"
-        },
-        {
-            name: "Tony Fernández",
-            era: "1983–2001",
-            team: "Toronto Blue Jays",
-            image: " https://cdn.vox-cdn.com/thumbor/t5yi1jauuGeBbYjg9wcxDs-IXNg=/1400x1400/filters:forma[…].vox-cdn.com/uploads/chorus_asset/file/23249734/918358886.jpg"
-        }
-    ];
 
-    await Player.create(players)
-
-    await db.close()
-}
-
-insertData()
+  const insertData = async () => {
+    try {
+      await db.once("open", async () => {
+        console.log("🔌 Connected to MongoDB Atlas");
+  
+        // Clear existing data
+        await Post.deleteMany();         // Delete posts first (they reference players)
+        await Player.deleteMany();       // Then delete players
+  
+        // Seed new players
+        await Player.insertMany(players);
+  
+        console.log("✅ New players inserted successfully");
+        mongoose.connection.close();
+      });
+    } catch (err) {
+      console.error("❌ Error seeding database:", err);
+      mongoose.connection.close();
+    }
+  };
+  
+  insertData();

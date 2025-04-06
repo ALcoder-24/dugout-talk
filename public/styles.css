@@ -1,0 +1,129 @@
+/* MLB Theme Base */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    color: #111;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  /* Headings */
+  h1, h2, h3 {
+    color: #002D72; /* MLB Navy */
+  }
+  
+  /* Layout */
+  ul {
+    padding: 0;
+    list-style: none;
+  }
+  
+  li {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  
+  /* Buttons */
+  button,
+  a button {
+    background-color: #C8102E; /* MLB Red */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover,
+  a button:hover {
+    background-color: #a10c24;
+  }
+  
+  /* Links */
+  a {
+    color: #002D72;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Player List Grid */
+  .player-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .player-card {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    width: 220px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .player-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  /* Forms */
+  form {
+    margin-top: 15px;
+    max-width: 600px;
+  }
+  
+  textarea,
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+  }
+  
+  /* Page Wrapper */
+  .container {
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  /* Navbar (if added later) */
+  .navbar {
+    background-color: #002D72;
+    color: white;
+    padding: 10px 20px;
+  }
+  .auth-container {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .auth-form input[type="text"],
+  .auth-form input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
