@@ -127,4 +127,15 @@ body {
     border-radius: 5px;
   }
   
+  .stadium-bg {
+    background-image: url("https://img.mlbstatic.com/mlb-images/image/private/t_w2208/mlb/gnwc9xw06aegqhjawjgm.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    opacity: 0.95;
+    /* Overlay */
+    background-color: rgba(255, 255, 255, 0.5);
+    background-blend-mode: lighten;
+  }
   
