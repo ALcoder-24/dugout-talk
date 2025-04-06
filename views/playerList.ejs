@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Players</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        img {
+            max-width: 150px;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>All Players</h1>
+
+    <a href="/dashboard"><button>Back to Dashboard</button></a>
+    <a href="/auth/logout"><button>Logout</button></a>
+
+    <ul>
+        <% players.forEach(player => { %>
+            <li>
+                <a href="/posts/player/<%= player._id %>">
+                    <strong><%= player.name %></strong><br>
+                    <img src="<%= player.image %>" alt="<%= player.name %>">
+                </a>
+            </li>
+        <% }) %>
+    </ul>
+</body>
+</html>

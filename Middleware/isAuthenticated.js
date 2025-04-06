@@ -1,7 +1,11 @@
-// Middleware to check if the user is authenticated
 export const isAuthenticated = (req, res, next) => {
-    if (!req.session.user) {
-        return res.redirect("/auth/login");  // Redirect to login if not authenticated
+    console.log("Session check:", req.session);
+    if (req.session && req.session.user) {
+      console.log("✅ User is authenticated:", req.session.user.username);
+      return next();
+    } else {
+      console.log("❌ Not authenticated — redirecting to login");
+      res.redirect("/auth/login");
     }
-    next();  // Proceed if authenticated
-};
+  };
+  

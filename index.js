@@ -6,7 +6,8 @@ import userRoutes from "./routes/userRoutes.js"; // Correct path
 import postRoutes from "./routes/postRoutes.js"; // Correct path
 import { isAuthenticated } from "./Middleware/isAuthenticated.js"; // Correct path to middleware
 import { getDashboard } from "./controllers/userController.js";
-import Player from "./models/Player.js";  // Import the Player model
+import playerRoutes from "./routes/playerRoutes.js";
+import Player from "./models/Player.js";
 
 
 // Initialize dotenv
@@ -26,7 +27,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET, // Secret for encrypting session data
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
   })
 );
 
@@ -41,6 +42,8 @@ app.use("/posts", isAuthenticated, postRoutes); // Post routes with authenticati
 
 // Add this route for dashboard
 app.get("/dashboard", isAuthenticated, getDashboard);
+app.use("/players", playerRoutes);
+
 
 app.get("/guest", (req, res) => {
   // Fetch all players from the database
@@ -54,6 +57,8 @@ app.get("/guest", (req, res) => {
           res.status(500).send("Error fetching players.");
       });
 });
+
+
 
 
 

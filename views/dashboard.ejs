@@ -1,55 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dugout Talk - Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    button {
+      margin: 5px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    hr {
+      width: 60%;
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to Your Dashboard, <%= user.username %>!</h1>
+  <h1>Welcome, <%= user.username %>!</h1>
 
+  <!-- Logout -->
+  <div style="margin-bottom: 20px;">
+    <a href="/auth/logout"><button>Logout</button></a>
+  </div>
 
-    <!-- Logout and Home -->
-    <div style="margin-bottom: 20px;">
-        <a href="/auth/logout"><button>Logout</button></a>
-    </div>
+  <!-- User Posts -->
+  <h2>Your Posts:</h2>
+  <ul>
+    <% if (userPosts.length === 0) { %>
+      <li>You haven't written any posts yet.</li>
+    <% } else { %>
+      <% userPosts.forEach(post => { %>
+        <li>
+          <strong>Player:</strong> <%= post.player_id.name %><br />
+          <strong>Content:</strong> <%= post.content %><br />
 
-    <!-- User's Past Posts -->
-    <h2>Your Posts:</h2>
-    <ul>
-        <% if (userPosts.length === 0) { %>
-            <li>You haven't written any posts yet.</li>
-        <% } else { %>
-            <% userPosts.forEach(post => { %>
-                <li>
-                    <strong>Player:</strong> <%= post.player_id.name %><br>
-                    <strong>Content:</strong> <%= post.content %><br>
+          <!-- Edit Button -->
+          <a href="/posts/<%= post._id %>/edit">
+            <button>Edit</button>
+          </a>
 
-                    <!-- Edit Button -->
-                    <a href="/posts/<%= post._id %>/edit">
-                        <button>Edit</button>
-                    </a>
+          <!-- Delete Button -->
+          <form
+            action="/posts/<%= post._id %>/delete"
+            method="POST"
+            style="display: inline"
+          >
+            <button type="submit">Delete</button>
+          </form>
+        </li>
+        <hr />
+      <% }) %>
+    <% } %>
+  </ul>
 
-                    <!-- Delete Button -->
-                    <form action="/posts/<%= post._id %>/delete" method="POST" style="display:inline;">
-                        <button type="submit">Delete</button>
-                    </form>
-                </li>
-                <hr>
-            <% }) %>
-        <% } %>
-    </ul>
-
-    <!-- Available Players -->
-    <h2>Players You Can Post About:</h2>
-    <ul>
-        <% players.forEach(player => { %>
-            <li>
-                <a href="/posts/player/<%= player._id %>">
-                    <%= player.name %> - <img src="<%= player.image %>" width="50">
-                </a>
-            </li>
-        <% }) %>
-    </ul>
+  <!-- Players -->
+  <h2>Check out the players</h2>
+  <a href="/players"><button>View All Players</button></a>
 </body>
 </html>
+
 
