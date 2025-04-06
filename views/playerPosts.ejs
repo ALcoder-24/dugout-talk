@@ -1,37 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title><%= player.name %> Posts</title>
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
   <div class="container">
+    <h1><%= player.name %></h1>
 
-    <!-- Player Info -->
-    <div style="text-align: center; margin-bottom: 30px;">
-      <h1><%= player.name %></h1>
-      <img src="<%= player.image %>" alt="<%= player.name %>" style="max-width: 300px; border-radius: 10px;" />
-      <p><strong>Team:</strong> <%= player.team %></p>
-      <p><strong>Era:</strong> <%= player.era %></p>
-    </div>
+    <img src="<%= player.image %>" alt="Photo of <%= player.name %>" style="max-height: 300px; border-radius: 8px; display: block; margin: 0 auto 20px;" />
 
-    <!-- Posts About Player -->
     <h2>Posts about <%= player.name %></h2>
 
     <% if (posts.length > 0) { %>
-      <ul style="padding: 0;">
+      <ul>
         <% posts.forEach(post => { %>
-          <li style="
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            list-style: none;
-          ">
+          <li>
             <p><%= post.content %></p>
-            <small>Posted by: <%= post.user_id.username %></small>
+            <small>Posted by: <strong><%= post.user_id.username %></strong></small>
           </li>
         <% }) %>
       </ul>
@@ -39,23 +26,16 @@
       <p>No posts yet for this player.</p>
     <% } %>
 
-    <!-- Create Post Form -->
-    <div style="margin-top: 40px;">
-      <h3>Create a new post about <%= player.name %></h3>
-      <form action="/posts/player/<%= player._id %>" method="POST">
-        <textarea name="content" rows="4" required></textarea>
-        <br />
-        <button type="submit">Create Post</button>
-      </form>
-    </div>
+    <hr>
 
-    <!-- Back/Home buttons -->
-    <div style="margin-top: 30px;">
-      <a href="/players"><button>Back to All Players</button></a>
-      <a href="/dashboard"><button>Home</button></a>
-      <a href="/auth/logout"><button>Logout</button></a>
-    </div>
-
+    <h3>Create a New Post</h3>
+    <form action="/posts/player/<%= player._id %>" method="POST">
+      <textarea name="content" rows="4" placeholder="Share your thoughts about <%= player.name %>..." required></textarea>
+      <div class="button-group">
+        <button type="submit">Submit Post</button>
+        <a href="/dashboard"><button type="button">Home</button></a>
+      </div>
+    </form>
   </div>
 </body>
 </html>

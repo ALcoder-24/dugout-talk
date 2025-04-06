@@ -158,7 +158,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-color: rgba(255, 255, 255, 0.7); /* light overlay */
+    background-color: rgba(255, 255, 255, 0.3); 
     background-blend-mode: lighten;
     z-index: -1;
   }
