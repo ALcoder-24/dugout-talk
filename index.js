@@ -2,13 +2,12 @@ import express from "express";
 import db from "./db/connection.js";
 import dotenv from "dotenv";
 import session from "express-session";
-import userRoutes from "./routes/userRoutes.js"; // Correct path
-import postRoutes from "./routes/postRoutes.js"; // Correct path
-import { isAuthenticated } from "./Middleware/isAuthenticated.js"; // Correct path to middleware
+import userRoutes from "./routes/userRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
+import { isAuthenticated } from "./Middleware/isAuthenticated.js";
 import { getDashboard } from "./controllers/userController.js";
 import playerRoutes from "./routes/playerRoutes.js";
 import Player from "./models/Player.js";
-
 
 // Initialize dotenv
 dotenv.config();
@@ -44,23 +43,18 @@ app.use("/posts", isAuthenticated, postRoutes); // Post routes with authenticati
 app.get("/dashboard", isAuthenticated, getDashboard);
 app.use("/players", playerRoutes);
 
-
 app.get("/guest", (req, res) => {
   // Fetch all players from the database
   Player.find()
-      .then(players => {
-          // Render guest page and pass players to it
-          res.render("guest", { players });
-      })
-      .catch(err => {
-          console.error(err);
-          res.status(500).send("Error fetching players.");
-      });
+    .then((players) => {
+      // Render guest page and pass players to it
+      res.render("guest", { players });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error fetching players.");
+    });
 });
-
-
-
-
 
 // Start Server
 const PORT = process.env.PORT || 3000;
