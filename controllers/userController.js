@@ -1,15 +1,12 @@
-// controllers/userController.js
 import User from "../models/User.js";
 import Post from "../models/Post.js";
 import Player from "../models/Player.js";
 import bcrypt from "bcrypt";
 
-// Show the login page
 export const getLogin = (req, res) => {
   res.render("login");
 };
 
-// Handle login
 export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -43,42 +40,34 @@ export const login = async (req, res) => {
   }
 };
 
-// Show the registration page
 export const getRegister = (req, res) => {
-  res.render("register"); // Ensure you have a register.ejs file
+  res.render("register"); 
 };
 
-// Handle registration
 export const register = async (req, res) => {
   try {
-    console.log("Register request received:", req.body); // Debugging
 
     const { username, password } = req.body;
 
-    // Check if username already exists
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-      console.log("Username already taken");
       return res
         .status(400)
         .send("Username already exists. Please choose another one.");
     }
 
-    // Hash password
+    
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("Hashed Password:", hashedPassword); // Debugging
+    
 
-    // Create new user
     const newUser = new User({ username, password: hashedPassword });
     await newUser.save();
 
-    // Store user session
     req.session.user = {
       _id: newUser._id,
       username: newUser.username,
     };
 
-    console.log("User registered successfully");
 
     req.session.save(() => {
       res.redirect("/dashboard");
@@ -89,28 +78,24 @@ export const register = async (req, res) => {
   }
 };
 
-// Handle logout
 export const logout = (req, res) => {
   req.session.destroy(() => {
     res.redirect("/");
   });
 };
 
-// Show the dashboard
 export const getDashboard = async (req, res) => {
   try {
     const userId = req.session.user._id;
 
     if (!userId) {
-      return res.redirect("/auth/login"); // ✅ Redirect if not logged in
+      return res.redirect("/auth/login"); 
     }
 
-    // Fetch past posts by this user
     const userPosts = await Post.find({ user_id: userId }).populate(
       "player_id"
     );
 
-    // Fetch all players
     const players = await Player.find();
 
     return res.render("dashboard", {

@@ -102,14 +102,11 @@ const players = [
       await db.once("open", async () => {
         console.log(" Connected to MongoDB Atlas");
   
-        // Clear existing data
         await Post.deleteMany();         
         await Player.deleteMany();       
   
-        // Seed new players
         await Player.insertMany(players);
   
-        console.log(" New players inserted successfully");
         mongoose.connection.close();
       });
     } catch (err) {

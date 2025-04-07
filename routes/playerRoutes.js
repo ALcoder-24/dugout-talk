@@ -1,4 +1,3 @@
-// routes/playerRoutes.js
 import express from "express";
 import Player from "../models/Player.js";
 import { isAuthenticated } from "../Middleware/isAuthenticated.js";

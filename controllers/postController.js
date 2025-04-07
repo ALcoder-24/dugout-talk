@@ -1,9 +1,7 @@
-// controllers/postController.js
 import Post from "../models/Post.js";
 import Player from "../models/Player.js";
 import User from "../models/User.js";
 
-// Controller function to get posts for a specific player
 export const getPlayerPosts = async (req, res) => {
   const playerId = req.params.id;
   const userId = req.session.user._id;
@@ -14,10 +12,8 @@ export const getPlayerPosts = async (req, res) => {
       return res.status(404).send("Player not found");
     }
 
-    // Get all posts about this player
     const posts = await Post.find({ player_id: playerId }).populate("user_id");
 
-    // Render player's page with posts and the option to create a post 
     res.render("playerPosts", {
       player,
       posts,
@@ -36,7 +32,6 @@ export const getAllPosts = async (req, res) => {
   }
 };
 
-// Controller function to handle creating a new post about a player
 export const createPost = async (req, res) => {
   const { content } = req.body;
   const playerId = req.params.id;
@@ -50,18 +45,17 @@ export const createPost = async (req, res) => {
     });
     await newPost.save();
 
-    res.redirect(`/posts/player/${playerId}`); // Redirect to the player’s post page
+    res.redirect(`/posts/player/${playerId}`); 
   } catch (err) {
     res.status(500).send("Error creating post");
   }
 };
 
-// controllers/postController.js
 
 export const getCreatePost = async (req, res) => {
   try {
-    const users = await User.find(); // If needed for your form
-    const players = await Player.find(); // If needed for your form
+    const users = await User.find(); 
+    const players = await Player.find(); 
     res.render("createPost", { users, players });
   } catch (err) {
     res.status(500).send("Error fetching data for create post");

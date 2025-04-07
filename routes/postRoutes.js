@@ -1,4 +1,3 @@
-// routes/postRoutes.js
 import express from "express";
 import Post from "../models/Post.js";
 import {
@@ -12,16 +11,12 @@ import { checkPostOwner } from "../Middleware/checkPostOwner.js";
 
 const router = express.Router();
 
-// Route to display posts about a player
-router.get("/player/:id", isAuthenticated, getPlayerPosts); // Display posts related to a specific player
+router.get("/player/:id", isAuthenticated, getPlayerPosts); 
 
-// Route to create a post about a player
-router.post("/player/:id", isAuthenticated, createPost); // User creates a post for that player
+router.post("/player/:id", isAuthenticated, createPost); 
 
-// Route for viewing all posts (for guests and authenticated users)
-router.get("/", getAllPosts); // This will show all posts (whether user is logged in or not)
+router.get("/", getAllPosts); 
 
-// Route for creating a post (only authenticated users can access this)
 router.get("/create", isAuthenticated, getCreatePost);
 router.post("/", isAuthenticated, createPost);
 
@@ -30,14 +25,12 @@ router.get("/:id/edit", isAuthenticated, checkPostOwner, async (req, res) => {
   res.render("editPost", { post });
 });
 
-// Handle edit submission
 router.post("/:id/edit", isAuthenticated, checkPostOwner, async (req, res) => {
   const { content } = req.body;
   await Post.findByIdAndUpdate(req.params.id, { content });
   res.redirect("/dashboard");
 });
 
-// Delete a post
 router.post(
   "/:id/delete",
   isAuthenticated,

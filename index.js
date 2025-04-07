@@ -9,45 +9,36 @@ import { getDashboard } from "./controllers/userController.js";
 import playerRoutes from "./routes/playerRoutes.js";
 import Player from "./models/Player.js";
 
-// Initialize dotenv
 dotenv.config();
 
-// Initialize app
 const app = express();
 
-// Middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.set("view engine", "ejs");
-app.use(express.static("public")); // Serve static files from 'public' folder
+app.use(express.static("public")); 
 
-// Session Middleware
 app.use(
   session({
-    secret: process.env.SESSION_SECRET, // Secret for encrypting session data
+    secret: process.env.SESSION_SECRET, 
     resave: false,
     saveUninitialized: false,
   })
 );
 
-// Home route
 app.get("/", (req, res) => {
   res.render("home");
 });
 
-// Routes
-app.use("/auth", userRoutes); // Authentication routes
-app.use("/posts", isAuthenticated, postRoutes); // Post routes with authentication required
+app.use("/auth", userRoutes); 
+app.use("/posts", isAuthenticated, postRoutes); 
 
-// Add this route for dashboard
 app.get("/dashboard", isAuthenticated, getDashboard);
 app.use("/players", playerRoutes);
 
 app.get("/guest", (req, res) => {
-  // Fetch all players from the database
   Player.find()
     .then((players) => {
-      // Render guest page and pass players to it
       res.render("guest", { players });
     })
     .catch((err) => {
@@ -56,7 +47,6 @@ app.get("/guest", (req, res) => {
     });
 });
 
-// Start Server
 const PORT = process.env.PORT || 3000;
 
 db.on("connected", () => {
