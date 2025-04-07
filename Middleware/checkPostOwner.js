@@ -1,4 +1,3 @@
-// Middleware/checkPostOwner.js
 import Post from "../models/Post.js";
 
 export const checkPostOwner = async (req, res, next) => {
