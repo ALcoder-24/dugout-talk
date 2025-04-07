@@ -26,10 +26,15 @@
     </style>
 </head>
 <body>
-    <h1>All Players</h1>
 
+    <h1>All Players</h1>
+<!-- Navigation Buttons Row with spacing -->
+<div style="display: flex; justify-content: space-between; margin: 30px 40px;">
     <a href="/dashboard"><button>Home</button></a>
     <a href="/auth/logout"><button>Logout</button></a>
+  </div>
+  
+  
 
     <ul>
         <% players.forEach(player => { %>

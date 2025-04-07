@@ -5,7 +5,9 @@
   <title><%= player.name %> Posts</title>
   <link rel="stylesheet" href="/styles.css" />
 </head>
-<body>
+<body class="stadium-bg">
+
+
   <div class="container">
     <h1><%= player.name %></h1>
 
@@ -33,7 +35,7 @@
       <textarea name="content" rows="4" placeholder="Share your thoughts about <%= player.name %>..." required></textarea>
       <div class="button-group">
         <button type="submit">Submit Post</button>
-        <a href="/dashboard"><button type="button">Home</button></a>
+        <a href="/dashboard"><button type="button">Home </button></a>
       </div>
     </form>
   </div>

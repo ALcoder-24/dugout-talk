@@ -100,20 +100,20 @@ const players = [
   const insertData = async () => {
     try {
       await db.once("open", async () => {
-        console.log("🔌 Connected to MongoDB Atlas");
+        console.log(" Connected to MongoDB Atlas");
   
         // Clear existing data
-        await Post.deleteMany();         // Delete posts first (they reference players)
-        await Player.deleteMany();       // Then delete players
+        await Post.deleteMany();         
+        await Player.deleteMany();       
   
         // Seed new players
         await Player.insertMany(players);
   
-        console.log("✅ New players inserted successfully");
+        console.log(" New players inserted successfully");
         mongoose.connection.close();
       });
     } catch (err) {
-      console.error("❌ Error seeding database:", err);
+      console.error("Error seeding database:", err);
       mongoose.connection.close();
     }
   };
